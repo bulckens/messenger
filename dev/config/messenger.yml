@@ -1,0 +1,6 @@
+generic: &generic
+  title: "Messenger"
+  icon:  "images/messenger-logo-purple.png"
+
+dev:
+  <<: *generic

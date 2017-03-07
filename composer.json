@@ -9,7 +9,25 @@
             "email": "wout@mick-wout.com"
         }
     ],
-    "require": {},
+    "repositories": [
+        {   "type": "vcs",
+            "url": "git@github.com:bulckens/helpers.git",
+            "no-api": true
+        },
+        {   "type": "vcs",
+            "url": "git@github.com:bulckens/app-tools.git",
+            "no-api": true
+        },
+        {   "type": "vcs",
+            "url": "git@github.com:bulckens/cli-tools.git",
+            "no-api": true
+        }
+    ],
+    "require": {
+        "bulckens/helpers": "dev-master",
+        "bulckens/cli-tools": "dev-master",
+        "bulckens/app-tools": "dev-master"
+    },
     "dist": {
         "url": "git@github.com:bulckens/messenger.git",
         "type": "git"
