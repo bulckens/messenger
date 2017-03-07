@@ -1,0 +1,25 @@
+{
+    "name": "bulckens/messenger",
+    "description": "A PHP bridge for OSX's Terminal-Notifier.app",
+    "type": "library",
+    "license": "Proprietary",
+    "authors": [
+        {
+            "name": "Wout Fierens",
+            "email": "wout@mick-wout.com"
+        }
+    ],
+    "require": {},
+    "dist": {
+        "url": "git@github.com:bulckens/messenger.git",
+        "type": "git"
+    },
+    "autoload": {
+        "psr-0": {
+            "Bulckens": "src/"
+        }
+    },
+    "require-dev": {
+        "phpspec/phpspec": "^3.2"
+    }
+}
