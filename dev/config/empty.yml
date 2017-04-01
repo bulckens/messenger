@@ -1,0 +1,5 @@
+generic: &generic
+  nothing: true
+
+dev:
+  <<: *generic
