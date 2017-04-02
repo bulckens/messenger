@@ -83,6 +83,21 @@ class MessageSpec extends ObjectBehavior {
   }
 
 
+  // Link method
+  function it_sets_the_link() {
+    $this->link( 'http://somewhere.else' );
+    $this->command()->shouldContain( "-open 'http://somewhere.else'" );
+  }
+
+  function it_uses_no_link_when_none_is_given() {
+    $this->command()->shouldNotContain( '-open' );
+  }
+
+  function it_returns_itself_after_setting_the_link() {
+    $this->link( 'http://somewhere.else' )->shouldBe( $this );
+  } 
+
+
   // Command method
   function it_retuns_the_command() {
     $this->command()->shouldContain( 'utilities/terminal-notifier.app/Contents/MacOS/terminal-notifier' );
@@ -108,6 +123,12 @@ class MessageSpec extends ObjectBehavior {
   function it_shows_no_icon() {
     $this->beConstructedWith( 'No second icon is showing', 'empty.yml' );
     $this->title( 'Iconless' )->run();
+  }
+
+  function it_shows_a_link() {
+    $this->beConstructedWith( 'Linking is fun!' );
+    $this->link( 'http://somewhere.else' );
+    $this->title( 'Linked' )->run();
   }
 
 }

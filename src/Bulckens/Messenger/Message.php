@@ -54,6 +54,13 @@ class Message {
   }
 
 
+  // Set link
+  public function link( $link ) {
+    $this->link = $link;
+    return $this;
+  }
+
+
   // Build command
   public function command() {
     // prepare command
@@ -68,7 +75,7 @@ class Message {
 
     // add link
     if ( $this->link )
-      array_push( $command, "-open $this->link" );
+      array_push( $command, "-open '$this->link'" );
 
     // build full command
     return $this->notifier() . ' ' . implode( ' ', $command );
