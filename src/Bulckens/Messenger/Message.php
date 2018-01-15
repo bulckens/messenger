@@ -18,7 +18,7 @@ class Message {
 
   public function __construct( $message, $file = 'messenger.yml' ) {
     // define custom config file
-    $this->file( $file );
+    $this->configFile( $file );
 
     // set root
     $this->root = FileHelper::parent( __DIR__, 3 );
