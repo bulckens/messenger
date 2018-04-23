@@ -17,49 +17,29 @@ class MessageSpec extends ObjectBehavior {
   // Initialization
   function it_sets_the_message() {
     $this->beConstructedWith( 'Más adelante' );
-    $this->command()->shouldContain( " -message 'Más adelante'" );
+    $this->command()->shouldMatch( "/( -message)? 'Más adelante'/" );
   }
 
-  function it_adds_slashes_when_the_given_message_contains_single_quotes() {
-    $this->beConstructedWith( "It's fabulous" );
-    $this->command()->shouldContain( " -message 'It\'s fabulous'" );
-  }
 
-  function it_adds_slashes_when_the_given_message_contains_double_quotes() {
-    $this->beConstructedWith( 'A weird "banana" they said' );
-    $this->command()->shouldContain( " -message 'A weird \\\"banana\\\" they said'" );
-  }
-  
-  
   // Notifier method
   function it_gets_the_full_notifier_path() {
-    $this->notifier()->shouldEndWith( 'utilities/terminal-notifier.app/Contents/MacOS/terminal-notifier' );
+    $this->notifier()->shouldMatch( '/notify-send|terminal-notifier/' );
   }
 
 
   // Title method
   function it_sets_the_title() {
     $this->title( 'Cuidado' );
-    $this->command()->shouldContain( " -title 'Cuidado'" );
+    $this->command()->shouldMatch( "/( -title)? 'Cuidado'/" );
   }
 
   function it_uses_a_configured_title() {
-    $this->command()->shouldContain( " -title 'Messenger'" );
+    $this->command()->shouldMatch( "/( -title)? 'Messenger'/" );
   }
 
   function it_uses_a_default_title_when_none_is_given_or_configured() {
     $this->beConstructedWith( 'Más adelante', 'empty.yml' );
-    $this->command()->shouldContain( " -title 'Message'" );
-  }
-
-  function it_adds_slashes_when_the_given_title_contains_single_quotes() {
-    $this->title( "They're gone" );
-    $this->command()->shouldContain( " -title 'They\'re gone'" );
-  }
-
-  function it_adds_slashes_when_the_given_title_contains_double_quotes() {
-    $this->title( 'The "nice" leg...' );
-    $this->command()->shouldContain( " -title 'The \\\"nice\\\" leg...'" );
+    $this->command()->shouldMatch( "/( -title)? 'Message'/" );
   }
 
   function it_returns_itself_after_setting_the_title() {
@@ -83,27 +63,28 @@ class MessageSpec extends ObjectBehavior {
   }
 
 
-  // Link method
-  function it_sets_the_link() {
-    $this->link( 'http://somewhere.else' );
-    $this->command()->shouldContain( "-open 'http://somewhere.else'" );
-  }
-
-  function it_uses_no_link_when_none_is_given() {
-    $this->command()->shouldNotContain( '-open' );
-  }
-
-  function it_returns_itself_after_setting_the_link() {
-    $this->link( 'http://somewhere.else' )->shouldBe( $this );
-  } 
+  // Link method (not cross platform)
+  // function it_sets_the_link() {
+  //   $this->link( 'http://somewhere.else' );
+  //   $this->command()->shouldContain( "-open 'http://somewhere.else'" );
+  // }
+  //
+  // function it_uses_no_link_when_none_is_given() {
+  //   $this->command()->shouldNotContain( '-open' );
+  // }
+  //
+  // function it_returns_itself_after_setting_the_link() {
+  //   $this->link( 'http://somewhere.else' )->shouldBe( $this );
+  // }
 
 
   // Command method
   function it_retuns_the_command() {
-    $this->command()->shouldContain( 'utilities/terminal-notifier.app/Contents/MacOS/terminal-notifier' );
-    $this->command()->shouldContain( '-appIcon ' );
-    $this->command()->shouldContain( '-title ' );
-    $this->command()->shouldContain( '-message ' );
+    $this->beConstructedWith( 'Más adelante' );
+    $this->title( 'Beast' );
+    $this->command()->shouldMatch( '/notify-send|terminal-notifier/' );
+    $this->command()->shouldMatch( '/(-title )? \'Beast\' /' );
+    $this->command()->shouldMatch( '/(-message )? \'Más adelante\' /' );
   }
 
 
@@ -130,5 +111,6 @@ class MessageSpec extends ObjectBehavior {
     $this->link( 'http://somewhere.else' );
     $this->title( 'Linked' )->run();
   }
+
 
 }

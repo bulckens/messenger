@@ -1,6 +1,6 @@
 {
     "name": "bulckens/messenger",
-    "description": "A PHP bridge for OSX's Terminal-Notifier.app",
+    "description": "A PHP bridge for OSX's Terminal-Notifier.app and Ubuntu's Zenity",
     "type": "library",
     "license": "Proprietary",
     "authors": [

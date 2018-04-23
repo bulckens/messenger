@@ -2,6 +2,7 @@
 
 namespace Bulckens\Messenger;
 
+use Bulckens\CliTools\System;
 use Bulckens\Helpers\FileHelper;
 use Bulckens\AppTools\App;
 use Bulckens\AppTools\Traits\Configurable;
@@ -33,20 +34,27 @@ class Message {
     $this->icon( $this->config( 'icon' ) );
   }
 
-  
+
   // Get full notifier path
   public function notifier() {
-    return "$this->root/utilities/terminal-notifier.app/Contents/MacOS/terminal-notifier";
+    switch ( System::os()) {
+      case 'macOS':
+        return "$this->root/utilities/terminal-notifier.app/Contents/MacOS/terminal-notifier";
+      break;
+      case 'linux':
+        return 'notify-send';
+      break;
+    }
   }
 
-  
+
   // Set title
   public function title( $title ) {
     $this->title = addslashes( $title );
     return $this;
   }
 
-  
+
   // Set icon
   public function icon( $icon ) {
     $this->icon = App::root( $icon );
@@ -64,21 +72,29 @@ class Message {
   // Build command
   public function command() {
     // prepare command
-    $command = [
-      "-message '$this->message'"
-    , "-title '$this->title'"
-    ];
-
-    // add icon
-    if ( is_file( $this->icon ) )
-      array_push( $command, "-appIcon '$this->icon'" );
-
-    // add link
-    if ( $this->link )
-      array_push( $command, "-open '$this->link'" );
+    switch ( System::os()) {
+      case 'macOS':
+        $command = [
+          "-message '$this->message'"
+        , "-title '$this->title'"
+        , ( is_file( $this->icon ) ? "-appIcon '$this->icon'" : '' )
+        , ( $this->link ? "-open '$this->link'" : '')
+        ];
+      break;
+      case 'linux':
+        $command = [
+          "'$this->title'"
+        , "'$this->message'"
+        , "-t 500"
+        , ( is_file( $this->icon ) ? "-i '$this->icon'" : '' )
+        ];
+      break;
+    }
 
     // build full command
-    return $this->notifier() . ' ' . implode( ' ', $command );
+    if ( isset( $command )) {
+      return $this->notifier() . ' ' . implode( ' ', $command );
+    }
   }
 
 
