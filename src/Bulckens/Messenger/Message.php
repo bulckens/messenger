@@ -16,10 +16,14 @@ class Message {
   protected $icon;
   protected $link;
   protected $root;
+  protected $os;
 
   public function __construct( $message, $file = 'messenger.yml' ) {
     // define custom config file
     $this->configFile( $file );
+
+    // store os
+    $this->os = System::os();
 
     // set root
     $this->root = FileHelper::parent( __DIR__, 3 );
@@ -37,7 +41,7 @@ class Message {
 
   // Get full notifier path
   public function notifier() {
-    switch ( System::os()) {
+    switch ( $this->os ) {
       case 'macOS':
         return "$this->root/utilities/terminal-notifier.app/Contents/MacOS/terminal-notifier";
       break;
@@ -72,7 +76,7 @@ class Message {
   // Build command
   public function command() {
     // prepare command
-    switch ( System::os()) {
+    switch ( $this->os ) {
       case 'macOS':
         $command = [
           "-message '$this->message'"
@@ -100,7 +104,7 @@ class Message {
 
   // Show notifier
   public function run() {
-    return exec( $this->command() );
+    return exec( $this->command());
   }
 
 }
