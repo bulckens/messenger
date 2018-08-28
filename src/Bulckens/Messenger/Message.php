@@ -2,7 +2,6 @@
 
 namespace Bulckens\Messenger;
 
-use Bulckens\CliTools\System;
 use Bulckens\Helpers\FileHelper;
 use Bulckens\AppTools\App;
 use Bulckens\AppTools\Traits\Configurable;
@@ -23,7 +22,13 @@ class Message {
     $this->configFile( $file );
 
     // store os
-    $this->os = System::os();
+    if ( `which sw_vers` ) {
+      $this->os = 'macOS';
+    } elseif ( `which lscpu` ) {
+      $this->os = 'linux';
+    } else {
+      $this->os = 'other';
+    }
 
     // set root
     $this->root = FileHelper::parent( __DIR__, 3 );
